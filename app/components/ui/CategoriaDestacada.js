@@ -5,22 +5,22 @@ import Link from 'next/link'
 const categorias = [
   {
     nombre: 'Pianos Digitales',
-    imagen: '/img6.png',
+    imagen: '/musicianpro-nextjs/img6.png',
     enlace: '/electrofonos/pianos-digitales',
   },
   {
     nombre: 'Guitarras',
-    imagen: '/img5.png',
+    imagen: '/musicianpro-nextjs/img5.png',
     enlace: '/cordofonos/guitarras-electricas',
   },
   {
     nombre: 'Baterías',
-    imagen: '/img7.png',
+    imagen: '/musicianpro-nextjs/img7.png',
     enlace: '/percusion/baterias',
   },
   {
     nombre: 'Flautas',
-    imagen: '/img4.png',
+    imagen: '/musicianpro-nextjs/img4.png',
     enlace: '/aerofonos/flautas',
   },
 ]

@@ -1,26 +1,28 @@
-'use client'
+import { productos } from '../../data/productos';
+import ProductCard from '../../components/products/ProductCard';
 
-import { useParams } from 'next/navigation'
-import { productos } from '../../data/productos'
-import ProductCard from '../../components/products/ProductCard'
+export default function CategoriaPage({ params }) {
+  const { categoria, subcategoria } = params;
 
-export default function CategoriaPage() {
-  const { categoria, subcategoria } = useParams()
+  // Formatear para coincidir con los datos originales
+  const categoriaFormateada =
+    categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
 
-  const catFormateada = categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase()
-  const subcatFormateada = subcategoria.replace(/-/g, ' ')
+  const subcategoriaFormateada = subcategoria
+    .replace(/-/g, ' ')
+    .toLowerCase();
 
   const productosFiltrados = productos.filter(
     (prod) =>
-      prod.categoria === catFormateada &&
-      prod.subcategoria.toLowerCase() === subcatFormateada.toLowerCase()
-  )
+      prod.categoria.toLowerCase() === categoriaFormateada.toLowerCase() &&
+      prod.subcategoria.toLowerCase() === subcategoriaFormateada
+  );
 
   return (
     <div className="min-h-screen bg-[#F5EFE6] py-10 px-2 sm:px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-center mb-10 text-[#1C1C1C] capitalize tracking-wide">
-          {subcatFormateada}
+          {subcategoriaFormateada}
         </h1>
 
         {productosFiltrados.length === 0 ? (
@@ -36,5 +38,35 @@ export default function CategoriaPage() {
         )}
       </div>
     </div>
-  )
+  );
+}
+
+// Acá va el generateStaticParams actualizado
+export async function generateStaticParams() {
+  const categories = {
+    Cordofonos: ["Guitarras Criollas", "Guitarras Electricas", "Violines", "Arpas", "Bajos"],
+    Aerofonos: ["Saxofones", "Flautas", "Clarinetes", "Trompetas", "Armonicas"],
+    Percusion: ["Baterias", "Tambores", "Cajones"],
+    Electrofonos: [
+      "Sintetizadores",
+      "Teclados",
+      "Bajos eléctricos",
+      "Pianos Digitales",
+      "Theremines",
+      "Controladores MIDI",
+    ],
+  };
+
+  const paths = [];
+
+  for (const categoria in categories) {
+    for (const subcat of categories[categoria]) {
+      paths.push({
+        categoria: categoria.toLowerCase(),
+        subcategoria: subcat.toLowerCase().replace(/\s+/g, '-'),
+      });
+    }
+  }
+
+  return paths;
 }
