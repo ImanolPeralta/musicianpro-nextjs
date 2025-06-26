@@ -1,7 +1,15 @@
-import ProductDetail from '../../components/products/ProductDetail';
+import { getProductById } from "@/lib/products";
+import ProductDetail from "../../components/products/ProductDetail";
 
-export default function ProductoPage({ params }) {
+export default async function ProductoPage({ params }) {
   const { id } = params;
-  console.log('ID recibido en ProductoPage:', id);
-  return <ProductDetail id={id} />;
+  const item = await getProductById(id);
+
+  if (!item) {
+    return (
+      <p className="text-center mt-10 text-red-500">Producto no encontrado.</p>
+    );
+  }
+
+  return <ProductDetail item={item} />;
 }

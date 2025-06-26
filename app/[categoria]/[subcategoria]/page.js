@@ -1,20 +1,20 @@
-'use client'
+// app/[categoria]/[subcategoria]/page.js
+import { getAllProducts } from "@/lib/products";
+import ProductCard from "../../components/products/ProductCard";
 
-import { useParams } from 'next/navigation'
-import { productos } from '../../data/productos'
-import ProductCard from '../../components/products/ProductCard'
+export default async function CategoriaPage({ params }) {
+  const { categoria, subcategoria } = params;
 
-export default function CategoriaPage() {
-  const { categoria, subcategoria } = useParams()
+  const catFormateada = categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
+  const subcatFormateada = subcategoria.replace(/-/g, " ");
 
-  const catFormateada = categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase()
-  const subcatFormateada = subcategoria.replace(/-/g, ' ')
+  const productos = await getAllProducts();
 
   const productosFiltrados = productos.filter(
     (prod) =>
       prod.categoria === catFormateada &&
       prod.subcategoria.toLowerCase() === subcatFormateada.toLowerCase()
-  )
+  );
 
   return (
     <div className="min-h-screen bg-[#F5EFE6] py-10 px-2 sm:px-4 md:px-8">
@@ -36,5 +36,5 @@ export default function CategoriaPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

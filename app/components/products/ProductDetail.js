@@ -1,11 +1,7 @@
-"use client";
-import { productos } from "../../data/productos";
 import QtySelector from "../products/QtySelector";
 import GoBack from "../ui/GoBack";
 
-const ProductDetail = ({ id }) => {
-  const item = productos.find((p) => p.id === Number(id));
-
+const ProductDetail = ({ item }) => {
   if (!item) {
     return (
       <p className="text-center mt-10 text-red-500">Producto no encontrado.</p>
@@ -36,14 +32,15 @@ const ProductDetail = ({ id }) => {
       >
         {/* Imagen */}
         <div className="lg:w-1/2 flex justify-center items-center p-8 rounded-3xl">
-  <div className="overflow-hidden rounded-2xl shadow-lg w-full flex justify-center items-center">
-    <img
-  src={item.imagen}
-  alt={item.titulo}
-  className="object-contain max-w-full max-h-[400px] transition-transform duration-500 ease-in-out hover:scale-110"
-/>
-  </div>
-</div>
+          <div className="overflow-hidden rounded-2xl shadow-lg w-full flex justify-center items-center">
+            <img
+              src={item.imagen}
+              alt={item.titulo}
+              className="object-contain max-w-full max-h-[400px] transition-transform duration-500 ease-in-out hover:scale-110"
+            />
+          </div>
+        </div>
+
         {/* Info y descripción */}
         <div className="lg:w-1/2 flex flex-col justify-between">
           <div>
@@ -63,7 +60,6 @@ const ProductDetail = ({ id }) => {
 
             <QtySelector item={item} />
 
-            {/* Descripción dentro del mismo div */}
             <div className="mt-8">
               <h2 className="text-xl font-semibold mb-2" style={{ color: colors.texto }}>
                 Descripción
