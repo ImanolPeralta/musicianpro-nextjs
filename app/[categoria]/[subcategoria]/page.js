@@ -1,6 +1,28 @@
 // app/[categoria]/[subcategoria]/page.js
-import { getAllProducts } from "@/lib/products";
 import ProductCard from "../../components/products/ProductCard";
+
+const fetchProductos = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos`);
+  if (!res.ok) throw new Error("Error al obtener productos");
+  return res.json();
+};
+
+export async function generateStaticParams() {
+  const productos = await fetchProductos();
+
+  // Extraemos todos los pares únicos de categoría/subcategoría
+  const paths = productos.map((prod) => ({
+    categoria: prod.categoria.toLowerCase(),
+    subcategoria: prod.subcategoria.toLowerCase().replace(/ /g, "-"),
+  }));
+
+  // Quitamos duplicados
+  const uniquePaths = Array.from(
+    new Map(paths.map((p) => [`${p.categoria}/${p.subcategoria}`, p])).values()
+  );
+
+  return uniquePaths;
+}
 
 export default async function CategoriaPage({ params }) {
   const { categoria, subcategoria } = params;
@@ -8,7 +30,7 @@ export default async function CategoriaPage({ params }) {
   const catFormateada = categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
   const subcatFormateada = subcategoria.replace(/-/g, " ");
 
-  const productos = await getAllProducts();
+  const productos = await fetchProductos();
 
   const productosFiltrados = productos.filter(
     (prod) =>
