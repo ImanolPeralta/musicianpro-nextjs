@@ -5,6 +5,7 @@ import { HiOutlineMenu, HiX, HiShoppingCart, HiUser } from "react-icons/hi";
 import { MonteCarlo } from "next/font/google";
 import { Mulish } from "next/font/google";
 import { Icon } from '@iconify/react';
+import { useCart } from "../../context/CartContext";
 
 
 const mulish = Mulish({
@@ -34,6 +35,8 @@ const categories = {
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const { cart } = useCart();
+  const totalItems = cart.reduce((acc, item) => acc + item.cantidad, 0)
 
   const colors = {
     navbarFooter: "#3E2723",
@@ -139,6 +142,7 @@ export default function Navbar() {
 
           {/* Íconos Desktop */}
           <div className="hidden md:flex items-center space-x-4">
+            <Link href="/cart" className="relative">
             <button
               aria-label="Carrito"
               style={{ color: colors.textNavFooter }}
@@ -147,7 +151,15 @@ export default function Navbar() {
               onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
             >
               <HiShoppingCart size={24} />
+              {totalItems > 0 && (
+                <span
+                  className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                >
+                {totalItems}
+                </span>
+  )}
             </button>
+            </Link>
             <Link href="/admin">
   <button
     aria-label="Usuario"
@@ -266,6 +278,7 @@ export default function Navbar() {
 
           {/* Íconos móviles */}
           <li className="flex space-x-6 mt-4 px-3">
+            <Link href="/cart" className="relative">
             <button
               aria-label="Carrito"
               style={{ color: colors.textNavFooter }}
@@ -274,7 +287,14 @@ export default function Navbar() {
               onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
             >
               <HiShoppingCart size={24} />
+              {totalItems > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                {totalItems}
+                </span>
+  )}
             </button>
+            </Link>
             <button
               aria-label="Usuario"
               style={{ color: colors.textNavFooter }}

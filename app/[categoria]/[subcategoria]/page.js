@@ -1,28 +1,48 @@
-import { productos } from '../../data/productos';
-import ProductCard from '../../components/products/ProductCard';
+// app/[categoria]/[subcategoria]/page.js
+import ProductCard from "../../components/products/ProductCard";
 
-export default function CategoriaPage({ params }) {
+const fetchProductos = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos`);
+  if (!res.ok) throw new Error("Error al obtener productos");
+  return res.json();
+};
+
+export async function generateStaticParams() {
+  const productos = await fetchProductos();
+
+  // Extraemos todos los pares únicos de categoría/subcategoría
+  const paths = productos.map((prod) => ({
+    categoria: prod.categoria.toLowerCase(),
+    subcategoria: prod.subcategoria.toLowerCase().replace(/ /g, "-"),
+  }));
+
+  // Quitamos duplicados
+  const uniquePaths = Array.from(
+    new Map(paths.map((p) => [`${p.categoria}/${p.subcategoria}`, p])).values()
+  );
+
+  return uniquePaths;
+}
+
+export default async function CategoriaPage({ params }) {
   const { categoria, subcategoria } = params;
 
-  // Formatear para coincidir con los datos originales
-  const categoriaFormateada =
-    categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
+  const catFormateada = categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
+  const subcatFormateada = subcategoria.replace(/-/g, " ");
 
-  const subcategoriaFormateada = subcategoria
-    .replace(/-/g, ' ')
-    .toLowerCase();
+  const productos = await fetchProductos();
 
   const productosFiltrados = productos.filter(
     (prod) =>
-      prod.categoria.toLowerCase() === categoriaFormateada.toLowerCase() &&
-      prod.subcategoria.toLowerCase() === subcategoriaFormateada
+      prod.categoria === catFormateada &&
+      prod.subcategoria.toLowerCase() === subcatFormateada.toLowerCase()
   );
 
   return (
     <div className="min-h-screen bg-[#F5EFE6] py-10 px-2 sm:px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-center mb-10 text-[#1C1C1C] capitalize tracking-wide">
-          {subcategoriaFormateada}
+          {subcatFormateada}
         </h1>
 
         {productosFiltrados.length === 0 ? (
@@ -39,34 +59,4 @@ export default function CategoriaPage({ params }) {
       </div>
     </div>
   );
-}
-
-// Acá va el generateStaticParams actualizado
-export async function generateStaticParams() {
-  const categories = {
-    Cordofonos: ["Guitarras Criollas", "Guitarras Electricas", "Violines", "Arpas", "Bajos"],
-    Aerofonos: ["Saxofones", "Flautas", "Clarinetes", "Trompetas", "Armonicas"],
-    Percusion: ["Baterias", "Tambores", "Cajones"],
-    Electrofonos: [
-      "Sintetizadores",
-      "Teclados",
-      "Bajos eléctricos",
-      "Pianos Digitales",
-      "Theremines",
-      "Controladores MIDI",
-    ],
-  };
-
-  const paths = [];
-
-  for (const categoria in categories) {
-    for (const subcat of categories[categoria]) {
-      paths.push({
-        categoria: categoria.toLowerCase(),
-        subcategoria: subcat.toLowerCase().replace(/\s+/g, '-'),
-      });
-    }
-  }
-
-  return paths;
 }

@@ -1,14 +1,28 @@
-import { productos } from '../../../app/data/productos';
-import ProductDetail from '../../components/products/ProductDetail';
+// app/producto/[id]/page.js
+import ProductDetail from "../../components/products/ProductDetail";
 
-export default function ProductoPage({ params }) {
-  const { id } = params;
-
-  return <ProductDetail id={id} />;
-}
+const fetchProductoPorId = async (id) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos/${id}`);
+  if (!res.ok) return null;
+  return res.json();
+};
 
 export async function generateStaticParams() {
-  return productos.map((prod) => ({
-    id: prod.id.toString(),
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos`);
+  const productos = await res.json();
+
+  return productos.map((producto) => ({
+    id: producto.id.toString(),
   }));
+}
+
+export default async function ProductoPage({ params }) {
+  const { id } = params;
+  const item = await fetchProductoPorId(id);
+
+  if (!item) {
+    return <p className="text-center mt-10 text-red-500">Producto no encontrado.</p>;
+  }
+
+  return <ProductDetail item={item} />;
 }
