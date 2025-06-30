@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 const images = [
-  '/musicianpro-nextjs/img1.png',
-  '/musicianpro-nextjs/img2.png',
-  '/musicianpro-nextjs/img3.png',
+  '/img1.png',
+  '/img2.png',
+  '/img3.png',
 ];
 
 const Carousel = () => {

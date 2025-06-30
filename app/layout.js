@@ -13,7 +13,7 @@ export const metadata = {
   title: "MusicianPro",
   description: "Comprá guitarras, baterías, teclados y más en MusicianPro.",
   icons: {
-    icon: "/icon.ico",
+    icon: "/ico.ico",
   },
 };
 
