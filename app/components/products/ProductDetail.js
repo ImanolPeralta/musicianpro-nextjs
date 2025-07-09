@@ -16,6 +16,20 @@ const ProductDetail = ({ item }) => {
     precio: "#8B2C2C",
   };
 
+  const stockMessage = () => {
+    if (item.stock === 0) {
+      return (
+        <p className="text-red-600 font-bold mt-2">❌ Sin stock</p>
+      );
+    }
+    if (item.stock <= 5) {
+      return (
+        <p className="text-yellow-600 font-semibold mt-2">⚠️ Stock limitado</p>
+      );
+    }
+    return null;
+  };
+
   return (
     <div
       className="max-w-6xl mx-auto px-6 py-10"
@@ -48,17 +62,24 @@ const ProductDetail = ({ item }) => {
               {item.titulo}
             </h1>
 
-            <p className="text-4xl font-bold mb-6" style={{ color: colors.precio }}>
+            <p className="text-4xl font-bold mb-4" style={{ color: colors.precio }}>
               ${item.precio.toLocaleString("es-AR")}
             </p>
 
-            <p className="mb-4 font-medium" style={{ color: colors.texto }}>
+            <p className="mb-1 font-medium" style={{ color: colors.texto }}>
               Stock disponible:{" "}
               <span className="font-bold">{item.stock}</span> unidad
               {item.stock !== 1 ? "es" : ""}
             </p>
 
-            <QtySelector item={item} />
+            {stockMessage()}
+
+            {/* Solo mostramos QtySelector si hay stock */}
+            {item.stock > 0 && (
+              <div className="mt-4">
+                <QtySelector item={item} />
+              </div>
+            )}
 
             <div className="mt-8">
               <h2 className="text-xl font-semibold mb-2" style={{ color: colors.texto }}>

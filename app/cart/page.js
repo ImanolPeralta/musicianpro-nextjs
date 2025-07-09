@@ -104,11 +104,12 @@ export default function CartPage() {
                 ${total.toLocaleString("es-AR")}
               </span>
             </p>
-            <button
-              className="mt-4 bg-[#8B2C2C] text-[#F5EFE6] py-2 px-4 rounded-lg hover:bg-[#641B1B] transition-all cursor-pointer"
+            <Link
+              href="/checkout"
+              className="mt-4 block text-center bg-[#8B2C2C] text-[#F5EFE6] py-2 px-4 rounded-lg hover:bg-[#641B1B] transition-all"
             >
               Finalizar compra
-            </button>
+            </Link>
             <Link
               href="/"
               className="text-sm mt-3 text-center text-[#8B2C2C] hover:underline"

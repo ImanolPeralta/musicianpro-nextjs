@@ -1,5 +1,6 @@
 // app/producto/[id]/page.js
 import ProductDetail from "../../components/products/ProductDetail";
+import { notFound } from "next/navigation";
 
 const fetchProductoPorId = async (id) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos/${id}`);
@@ -21,7 +22,7 @@ export default async function ProductoPage({ params }) {
   const item = await fetchProductoPorId(id);
 
   if (!item) {
-    return <p className="text-center mt-10 text-red-500">Producto no encontrado.</p>;
+    notFound();
   }
 
   return <ProductDetail item={item} />;

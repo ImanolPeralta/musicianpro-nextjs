@@ -8,7 +8,7 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  // ✅ Al cargar, intentar recuperar carrito de localStorage
+  // ✅ Recuperar carrito desde localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
@@ -16,7 +16,7 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // ✅ Cada vez que cambia el carrito, guardarlo en localStorage
+  // ✅ Guardar carrito en localStorage
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -48,12 +48,29 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // Opcional: total de ítems
+  // Vaciar carrito (para checkout)
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem("cart");
+  };
+
+  // Total de ítems
   const totalItems = cart.reduce((acc, p) => acc + p.cantidad, 0);
+
+  // Total en $ (precio * cantidad)
+  const total = cart.reduce((acc, p) => acc + p.price * p.cantidad, 0);
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, totalItems }}
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        totalItems,
+        total,
+      }}
     >
       {children}
     </CartContext.Provider>

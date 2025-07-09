@@ -68,7 +68,10 @@ const ProductCard = ({ item }) => {
           >
             {item.titulo}
           </h4>
-          <p className="text-xl font-bold mb-4" style={{ color: colors.fondoBoton }}>
+          <p
+            className="text-xl font-bold mb-4"
+            style={{ color: colors.fondoBoton }}
+          >
             ${item.precio.toLocaleString("es-AR")}
           </p>
         </div>

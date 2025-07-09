@@ -6,7 +6,9 @@ import { MonteCarlo } from "next/font/google";
 import { Mulish } from "next/font/google";
 import { Icon } from '@iconify/react';
 import { useCart } from "../../context/CartContext";
-
+import { useAuth } from "../../context/AuthContext";
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase-auth';
 
 const mulish = Mulish({
   weight: '400',
@@ -37,6 +39,7 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const { cart } = useCart();
   const totalItems = cart.reduce((acc, item) => acc + item.cantidad, 0)
+  const { user } = useAuth();
 
   const colors = {
     navbarFooter: "#3E2723",
@@ -160,17 +163,30 @@ export default function Navbar() {
   )}
             </button>
             </Link>
-            <Link href="/admin">
-  <button
-    aria-label="Usuario"
-    style={{ color: colors.textNavFooter }}
-    className="cursor-pointer transition-colors duration-200"
-    onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-    onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
-  >
-    <HiUser size={24} />
-  </button>
-</Link>
+            {user ? (
+  <div className="flex items-center space-x-3">
+    <span className="text-sm">{user.email}</span>
+    <button
+      onClick={async () => await signOut(auth)}
+      className="text-sm px-2 py-1 bg-[#8B2C2C] text-[#F5EFE6] rounded hover:bg-[#641B1B] transition cursor-pointer"
+    >
+      Salir
+    </button>
+  </div>
+) : (
+  <Link href="/login">
+    <button
+      aria-label="Usuario"
+      style={{ color: colors.textNavFooter }}
+      className="cursor-pointer transition-colors duration-200"
+      onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
+      onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
+    >
+      <HiUser size={24} />
+    </button>
+  </Link>
+)}
+
 
           </div>
 
@@ -295,6 +311,7 @@ export default function Navbar() {
   )}
             </button>
             </Link>
+            <Link href="/login">
             <button
               aria-label="Usuario"
               style={{ color: colors.textNavFooter }}
@@ -304,6 +321,7 @@ export default function Navbar() {
             >
               <HiUser size={24} />
             </button>
+            </Link>
           </li>
         </ul>
       </div>
