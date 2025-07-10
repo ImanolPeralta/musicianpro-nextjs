@@ -1,18 +1,20 @@
 // app/components/ProductList.js
 import ProductCard from "../products/ProductCard";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const fetchProductos = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos`, {
-    next: { revalidate: 60 }, // o { next: { revalidate: 60 } }
+  const querySnapshot = await getDocs(collection(db, "productos"));
+  const productos = [];
+  querySnapshot.forEach((doc) => {
+    productos.push({ id: doc.id, ...doc.data() });
   });
-  if (!res.ok) throw new Error("Error al obtener productos");
-  return res.json();
+  return productos;
 };
 
 const ProductList = async ({ category }) => {
-  console.log("Categoría recibida en ProductList:", category);
-
   const productos = await fetchProductos();
+
   const items =
     category === "todos"
       ? productos
