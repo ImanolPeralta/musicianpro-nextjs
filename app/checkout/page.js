@@ -12,6 +12,8 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import { Link } from "lucide-react";
+import { Link } from 'next/link';
 
 const colors = {
   fondoCard: "#E8DCCB",
@@ -182,9 +184,9 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-[#F5EFE6] flex flex-col items-center justify-center p-6 sm:p-10">
         <p className="text-lg text-gray-600 text-center">
           Tu carrito está vacío.{" "}
-          <a href="/" className="text-[#8B2C2C] font-semibold hover:underline">
+          <Link href="/" className="text-[#8B2C2C] font-semibold hover:underline">
             Ir al inicio
-          </a>
+          </Link>
         </p>
       </div>
     );
