@@ -10,7 +10,7 @@ const fetchProductoPorId = async (id) => {
 };
 
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos`);
+  const res = await fetch("/api/productos");
   const productos = await res.json();
 
   return productos.map((producto) => ({

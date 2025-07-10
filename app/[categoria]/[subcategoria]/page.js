@@ -1,7 +1,7 @@
 import ProductCard from "../../components/products/ProductCard";
 
 const fetchProductos = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/productos`);
+  const res = await fetch("/api/productos");
   if (!res.ok) throw new Error("Error al obtener productos");
   return res.json();
 };
