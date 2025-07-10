@@ -1,18 +1,25 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useCart } from '@/app/context/CartContext';
-import { addDoc, collection, serverTimestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useCart } from "@/app/context/CartContext";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
 
 const colors = {
-  fondoCard: '#E8DCCB',
-  sombraCard: '#B0AFAF',
-  texto: '#1C1C1C',
-  fondoBoton: '#8B2C2C',
-  hoverBoton: '#641B1B',
-  fondoPrincipal: '#F5EFE6',
+  fondoCard: "#E8DCCB",
+  sombraCard: "#B0AFAF",
+  texto: "#1C1C1C",
+  fondoBoton: "#8B2C2C",
+  hoverBoton: "#641B1B",
+  fondoPrincipal: "#F5EFE6",
 };
 
 const countries = [
@@ -40,24 +47,24 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   const [buyer, setBuyer] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: 'Argentina',
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "Argentina",
   });
 
   const [payment, setPayment] = useState({
-    method: 'Tarjeta de crédito',
-    cardName: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
+    method: "Tarjeta de crédito",
+    cardName: "",
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
   });
 
-  const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleBuyerChange = (e) => {
@@ -69,10 +76,13 @@ export default function CheckoutPage() {
   };
 
   const validateCardFields = () => {
-    if (payment.method === "Tarjeta de crédito" || payment.method === "Tarjeta de débito") {
+    if (
+      payment.method === "Tarjeta de crédito" ||
+      payment.method === "Tarjeta de débito"
+    ) {
       return (
         payment.cardName.trim() &&
-        /^\d{16}$/.test(payment.cardNumber.replace(/\s+/g, '')) &&
+        /^\d{16}$/.test(payment.cardNumber.replace(/\s+/g, "")) &&
         /^\d{2}\/\d{2}$/.test(payment.expiryDate) &&
         /^\d{3,4}$/.test(payment.cvv)
       );
@@ -83,13 +93,21 @@ export default function CheckoutPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!buyer.name || !buyer.email || !buyer.address || !buyer.city || !buyer.postalCode) {
-      alert('Por favor completá todos los campos obligatorios de dirección y contacto.');
+    if (
+      !buyer.name ||
+      !buyer.email ||
+      !buyer.address ||
+      !buyer.city ||
+      !buyer.postalCode
+    ) {
+      alert(
+        "Por favor completá todos los campos obligatorios de dirección y contacto."
+      );
       return;
     }
 
     if (!validateCardFields()) {
-      alert('Por favor completá correctamente los datos de la tarjeta.');
+      alert("Por favor completá correctamente los datos de la tarjeta.");
       return;
     }
 
@@ -102,7 +120,9 @@ export default function CheckoutPage() {
         const docSnap = await getDoc(docRef);
 
         if (!docSnap.exists()) {
-          alert(`El producto "${item.titulo || item.title}" ya no está disponible.`);
+          alert(
+            `El producto "${item.titulo || item.title}" ya no está disponible.`
+          );
           setLoading(false);
           return;
         }
@@ -110,7 +130,11 @@ export default function CheckoutPage() {
         const productoData = docSnap.data();
 
         if (productoData.stock < item.cantidad) {
-          alert(`No hay suficiente stock para el producto "${item.titulo || item.title}". Stock disponible: ${productoData.stock}`);
+          alert(
+            `No hay suficiente stock para el producto "${
+              item.titulo || item.title
+            }". Stock disponible: ${productoData.stock}`
+          );
           setLoading(false);
           return;
         }
@@ -120,7 +144,7 @@ export default function CheckoutPage() {
       const order = {
         buyer,
         payment,
-        items: cart.map(item => ({
+        items: cart.map((item) => ({
           id: item.id,
           title: item.titulo || item.title,
           price: item.precio || item.price,
@@ -130,7 +154,7 @@ export default function CheckoutPage() {
         date: serverTimestamp(),
       };
 
-      const docRef = await addDoc(collection(db, 'orders'), order);
+      const docRef = await addDoc(collection(db, "orders"), order);
       setOrderId(docRef.id);
 
       // 3. Actualizar stock en Firestore
@@ -145,10 +169,9 @@ export default function CheckoutPage() {
 
       // 4. Vaciar carrito
       clearCart();
-
     } catch (error) {
-      console.error('Error al generar la orden:', error);
-      alert('Hubo un error procesando tu compra. Por favor, intentá de nuevo.');
+      console.error("Error al generar la orden:", error);
+      alert("Hubo un error procesando tu compra. Por favor, intentá de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -158,7 +181,7 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen bg-[#F5EFE6] flex flex-col items-center justify-center p-6 sm:p-10">
         <p className="text-lg text-gray-600 text-center">
-          Tu carrito está vacío.{' '}
+          Tu carrito está vacío.{" "}
           <a href="/" className="text-[#8B2C2C] font-semibold hover:underline">
             Ir al inicio
           </a>
@@ -185,7 +208,7 @@ export default function CheckoutPage() {
             Tu ID de orden es: <span className="font-bold">{orderId}</span>
           </p>
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push("/")}
             className="bg-[#8B2C2C] text-[#F5EFE6] py-2 px-6 rounded-lg hover:bg-[#641B1B] transition cursor-pointer"
           >
             Volver al inicio
@@ -203,7 +226,9 @@ export default function CheckoutPage() {
             </h2>
 
             <label className="block mb-4">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">Nombre completo *</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                Nombre completo *
+              </span>
               <input
                 type="text"
                 name="name"
@@ -216,7 +241,9 @@ export default function CheckoutPage() {
             </label>
 
             <label className="block mb-4">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">Teléfono</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                Teléfono
+              </span>
               <input
                 type="tel"
                 name="phone"
@@ -228,7 +255,9 @@ export default function CheckoutPage() {
             </label>
 
             <label className="block mb-4">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">Email *</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                Email *
+              </span>
               <input
                 type="email"
                 name="email"
@@ -241,7 +270,9 @@ export default function CheckoutPage() {
             </label>
 
             <label className="block mb-4">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">Dirección *</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                Dirección *
+              </span>
               <input
                 type="text"
                 name="address"
@@ -254,7 +285,9 @@ export default function CheckoutPage() {
             </label>
 
             <label className="block mb-4">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">Ciudad *</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                Ciudad *
+              </span>
               <input
                 type="text"
                 name="city"
@@ -267,7 +300,9 @@ export default function CheckoutPage() {
             </label>
 
             <label className="block mb-4">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">Código Postal *</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                Código Postal *
+              </span>
               <input
                 type="text"
                 name="postalCode"
@@ -280,7 +315,9 @@ export default function CheckoutPage() {
             </label>
 
             <label className="block">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">País *</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                País *
+              </span>
               <select
                 name="country"
                 value={buyer.country}
@@ -289,17 +326,23 @@ export default function CheckoutPage() {
                 className="bg-[#F5EFE6] w-full p-3 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8B2C2C]"
               >
                 {countries.map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
                 ))}
               </select>
             </label>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-[#1C1C1C] text-xl font-semibold mb-4 text-center">Método de pago</h2>
+            <h2 className="text-[#1C1C1C] text-xl font-semibold mb-4 text-center">
+              Método de pago
+            </h2>
 
             <label className="block mb-4">
-              <span className="text-[#1C1C1C] font-semibold mb-1 block">Seleccionar método *</span>
+              <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                Seleccionar método *
+              </span>
               <select
                 name="method"
                 value={payment.method}
@@ -308,15 +351,20 @@ export default function CheckoutPage() {
                 className="bg-[#F5EFE6] w-full p-3 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8B2C2C]"
               >
                 {paymentMethods.map((m) => (
-                  <option key={m} value={m}>{m}</option>
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
                 ))}
               </select>
             </label>
 
-            {(payment.method === 'Tarjeta de crédito' || payment.method === 'Tarjeta de débito') && (
+            {(payment.method === "Tarjeta de crédito" ||
+              payment.method === "Tarjeta de débito") && (
               <>
                 <label className="block mb-4">
-                  <span className="text-[#1C1C1C] font-semibold mb-1 block">Nombre en la tarjeta *</span>
+                  <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                    Nombre en la tarjeta *
+                  </span>
                   <input
                     type="text"
                     name="cardName"
@@ -329,7 +377,9 @@ export default function CheckoutPage() {
                 </label>
 
                 <label className="block mb-4">
-                  <span className="text-[#1C1C1C] font-semibold mb-1 block">Número de tarjeta *</span>
+                  <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                    Número de tarjeta *
+                  </span>
                   <input
                     type="text"
                     name="cardNumber"
@@ -346,7 +396,9 @@ export default function CheckoutPage() {
 
                 <div className="flex gap-4 mb-4">
                   <label className="flex-1">
-                    <span className="text-[#1C1C1C] font-semibold mb-1 block">Fecha de vencimiento *</span>
+                    <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                      Fecha de vencimiento *
+                    </span>
                     <input
                       type="text"
                       name="expiryDate"
@@ -361,7 +413,9 @@ export default function CheckoutPage() {
                   </label>
 
                   <label className="flex-1">
-                    <span className="text-[#1C1C1C] font-semibold mb-1 block">CVV *</span>
+                    <span className="text-[#1C1C1C] font-semibold mb-1 block">
+                      CVV *
+                    </span>
                     <input
                       type="password"
                       name="cvv"
@@ -385,7 +439,7 @@ export default function CheckoutPage() {
             disabled={loading}
             className="w-full bg-[#8B2C2C] text-[#F5EFE6] py-3 rounded-lg hover:bg-[#641B1B] transition disabled:opacity-50 font-semibold cursor-pointer"
           >
-            {loading ? 'Procesando...' : 'Confirmar compra'}
+            {loading ? "Procesando..." : "Confirmar compra"}
           </button>
         </form>
       )}

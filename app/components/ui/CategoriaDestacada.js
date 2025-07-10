@@ -1,29 +1,29 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
+import Link from "next/link";
 
 const categorias = [
   {
-    nombre: 'Pianos Digitales',
-    imagen: '/img6.png',
-    enlace: '/electrofonos/pianos-digitales',
+    nombre: "Pianos Digitales",
+    imagen: "/img6.png",
+    enlace: "/electrofonos/pianos-digitales",
   },
   {
-    nombre: 'Guitarras',
-    imagen: '/img5.png',
-    enlace: '/cordofonos/guitarras-electricas',
+    nombre: "Guitarras",
+    imagen: "/img5.png",
+    enlace: "/cordofonos/guitarras-electricas",
   },
   {
-    nombre: 'Baterías',
-    imagen: '/img7.png',
-    enlace: '/percusion/baterias',
+    nombre: "Baterías",
+    imagen: "/img7.png",
+    enlace: "/percusion/baterias",
   },
   {
-    nombre: 'Flautas',
-    imagen: '/img4.png',
-    enlace: '/aerofonos/flautas',
+    nombre: "Flautas",
+    imagen: "/img4.png",
+    enlace: "/aerofonos/flautas",
   },
-]
+];
 
 export default function CategoriaDestacada() {
   return (
@@ -47,5 +47,5 @@ export default function CategoriaDestacada() {
         ))}
       </div>
     </div>
-  )
+  );
 }

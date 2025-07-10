@@ -8,12 +8,8 @@ const Boton = ({ children, onClick, className = "" }) => {
         backgroundColor: "#8B2C2C",
         color: "#F5EFE6",
       }}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.backgroundColor = "#641B1B")
-      }
-      onMouseLeave={(e) =>
-        (e.currentTarget.style.backgroundColor = "#8B2C2C")
-      }
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#641B1B")}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#8B2C2C")}
     >
       {children}
     </button>

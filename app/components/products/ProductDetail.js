@@ -18,9 +18,7 @@ const ProductDetail = ({ item }) => {
 
   const stockMessage = () => {
     if (item.stock === 0) {
-      return (
-        <p className="text-red-600 font-bold mt-2">❌ Sin stock</p>
-      );
+      return <p className="text-red-600 font-bold mt-2">❌ Sin stock</p>;
     }
     if (item.stock <= 5) {
       return (
@@ -58,17 +56,23 @@ const ProductDetail = ({ item }) => {
         {/* Info y descripción */}
         <div className="lg:w-1/2 flex flex-col justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2" style={{ color: colors.texto }}>
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{ color: colors.texto }}
+            >
               {item.titulo}
             </h1>
 
-            <p className="text-4xl font-bold mb-4" style={{ color: colors.precio }}>
+            <p
+              className="text-4xl font-bold mb-4"
+              style={{ color: colors.precio }}
+            >
               ${item.precio.toLocaleString("es-AR")}
             </p>
 
             <p className="mb-1 font-medium" style={{ color: colors.texto }}>
-              Stock disponible:{" "}
-              <span className="font-bold">{item.stock}</span> unidad
+              Stock disponible: <span className="font-bold">{item.stock}</span>{" "}
+              unidad
               {item.stock !== 1 ? "es" : ""}
             </p>
 
@@ -82,11 +86,17 @@ const ProductDetail = ({ item }) => {
             )}
 
             <div className="mt-8">
-              <h2 className="text-xl font-semibold mb-2" style={{ color: colors.texto }}>
+              <h2
+                className="text-xl font-semibold mb-2"
+                style={{ color: colors.texto }}
+              >
                 Descripción
               </h2>
               <hr className="border-t-2 border-[#8B2C2C] mb-4" />
-              <p className="text-base leading-relaxed" style={{ color: colors.texto }}>
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: colors.texto }}
+              >
                 {item.descripcion}
               </p>
             </div>

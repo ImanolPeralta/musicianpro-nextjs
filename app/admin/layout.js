@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/app/context/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AdminLayout({ children }) {
   const { user } = useAuth();
@@ -10,11 +10,11 @@ export default function AdminLayout({ children }) {
 
   useEffect(() => {
     if (user === null) {
-      router.push('/login'); // redirige si no hay usuario
+      router.push("/login");
     }
   }, [user]);
 
-  if (!user) return null; // mientras carga
+  if (!user) return null;
 
   return <>{children}</>;
 }

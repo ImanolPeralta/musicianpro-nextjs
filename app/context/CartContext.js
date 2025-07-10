@@ -23,10 +23,10 @@ export const CartProvider = ({ children }) => {
 
   // Agregar producto
   const addToCart = (item, cantidad = 1) => {
-    setCart(prev => {
-      const existing = prev.find(p => p.id === item.id);
+    setCart((prev) => {
+      const existing = prev.find((p) => p.id === item.id);
       if (existing) {
-        return prev.map(p =>
+        return prev.map((p) =>
           p.id === item.id ? { ...p, cantidad: p.cantidad + cantidad } : p
         );
       }
@@ -36,13 +36,13 @@ export const CartProvider = ({ children }) => {
 
   // Eliminar producto
   const removeFromCart = (id) => {
-    setCart(prev => prev.filter(p => p.id !== id));
+    setCart((prev) => prev.filter((p) => p.id !== id));
   };
 
   // Cambiar cantidad
   const updateQuantity = (id, cantidad) => {
-    setCart(prev =>
-      prev.map(p =>
+    setCart((prev) =>
+      prev.map((p) =>
         p.id === id ? { ...p, cantidad: Math.max(1, cantidad) } : p
       )
     );

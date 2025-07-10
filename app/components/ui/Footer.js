@@ -69,8 +69,13 @@ const Footer = () => {
         {/* Logo + redes */}
         <div className="flex flex-col items-center md:items-start md:w-1/4">
           <div className="flex items-center mb-5">
-            <Icon icon="simple-icons:musicbrainz" className="text-4xl mr-3 cursor-pointer" />
-            <span className={`${montecarlo.className} text-3xl font-bold select-none cursor-pointer`}>
+            <Icon
+              icon="simple-icons:musicbrainz"
+              className="text-4xl mr-3 cursor-pointer"
+            />
+            <span
+              className={`${montecarlo.className} text-3xl font-bold select-none cursor-pointer`}
+            >
               MusicianPro
             </span>
           </div>
@@ -111,7 +116,9 @@ const Footer = () => {
                 {subs.map((sub) => (
                   <li key={sub}>
                     <Link
-                      href={`/${cat.toLowerCase()}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
+                      href={`/${cat.toLowerCase()}/${sub
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`}
                       className="hover:text-[#8B2C2C] transition-colors block"
                     >
                       {sub}

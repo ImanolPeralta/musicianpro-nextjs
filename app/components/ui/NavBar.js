@@ -4,24 +4,30 @@ import Link from "next/link";
 import { HiOutlineMenu, HiX, HiShoppingCart, HiUser } from "react-icons/hi";
 import { MonteCarlo } from "next/font/google";
 import { Mulish } from "next/font/google";
-import { Icon } from '@iconify/react';
+import { Icon } from "@iconify/react";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-import { signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase-auth';
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase-auth";
 
 const mulish = Mulish({
-  weight: '400',
-  subsets: ['latin'],
-})
+  weight: "400",
+  subsets: ["latin"],
+});
 
 const montecarlo = MonteCarlo({
-  weight: '400',
-  subsets: ['latin'],
-})
+  weight: "400",
+  subsets: ["latin"],
+});
 
 const categories = {
-  Cordofonos: ["Guitarras Criollas", "Guitarras Electricas", "Violines", "Arpas", "Bajos"],
+  Cordofonos: [
+    "Guitarras Criollas",
+    "Guitarras Electricas",
+    "Violines",
+    "Arpas",
+    "Bajos",
+  ],
   Aerofonos: ["Saxofones", "Flautas", "Clarinetes", "Trompetas", "Armonicas"],
   Percusion: ["Baterias", "Tambores", "Cajones"],
   Electrofonos: [
@@ -38,7 +44,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const { cart } = useCart();
-  const totalItems = cart.reduce((acc, item) => acc + item.cantidad, 0)
+  const totalItems = cart.reduce((acc, item) => acc + item.cantidad, 0);
   const { user } = useAuth();
 
   const colors = {
@@ -63,22 +69,24 @@ export default function Navbar() {
   return (
     <>
       <nav
-        style={{ backgroundColor: colors.navbarFooter, color: colors.textNavFooter }}
+        style={{
+          backgroundColor: colors.navbarFooter,
+          color: colors.textNavFooter,
+        }}
         className={`shadow-md fixed w-full z-60 ${mulish.className}`}
       >
         {/* Top bar (siempre visible) */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           {/* Logo */}
           <Link
-  href="/"
-  style={{ color: colors.textNavFooter }}
-  className={`flex items-center space-x-2 text-3xl font-bold select-none ${montecarlo.className}`}
-  onClick={closeMenu}
->
-  <Icon icon="simple-icons:musicbrainz" className="text-3xl" />
-  <span>MusicianPro</span>
-</Link>
-
+            href="/"
+            style={{ color: colors.textNavFooter }}
+            className={`flex items-center space-x-2 text-3xl font-bold select-none ${montecarlo.className}`}
+            onClick={closeMenu}
+          >
+            <Icon icon="simple-icons:musicbrainz" className="text-3xl" />
+            <span>MusicianPro</span>
+          </Link>
 
           {/* Menú Desktop */}
           <ul className="hidden md:flex space-x-6 items-center">
@@ -87,8 +95,12 @@ export default function Navbar() {
                 href="/"
                 style={{ color: colors.textNavFooter }}
                 className="cursor-pointer transition-colors duration-200"
-                onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = colors.btnPrimary)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = colors.textNavFooter)
+                }
                 onClick={closeMenu}
               >
                 Inicio
@@ -100,8 +112,12 @@ export default function Navbar() {
                 <button
                   style={{ color: colors.textNavFooter }}
                   className="flex items-center space-x-1 cursor-pointer transition-colors duration-200"
-                  onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = colors.btnPrimary)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = colors.textNavFooter)
+                  }
                   aria-haspopup="true"
                 >
                   <span>{cat}</span>
@@ -120,11 +136,14 @@ export default function Navbar() {
                   {subcats.map((sub) => (
                     <li key={sub} role="none">
                       <Link
-                        href={`/${cat.toLowerCase()}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
+                        href={`/${cat.toLowerCase()}/${sub
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")}`}
                         style={{ color: colors.textNavFooter }}
                         className="block px-4 py-2 cursor-pointer transition-colors duration-200"
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = colors.btnPrimary;
+                          e.currentTarget.style.backgroundColor =
+                            colors.btnPrimary;
                           e.currentTarget.style.color = colors.primaryBg;
                         }}
                         onMouseLeave={(e) => {
@@ -146,48 +165,52 @@ export default function Navbar() {
           {/* Íconos Desktop */}
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/cart" className="relative">
-            <button
-              aria-label="Carrito"
-              style={{ color: colors.textNavFooter }}
-              className="cursor-pointer transition-colors duration-200"
-              onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
-            >
-              <HiShoppingCart size={24} />
-              {totalItems > 0 && (
-                <span
-                  className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
-                >
-                {totalItems}
-                </span>
-  )}
-            </button>
+              <button
+                aria-label="Carrito"
+                style={{ color: colors.textNavFooter }}
+                className="cursor-pointer transition-colors duration-200"
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = colors.btnPrimary)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = colors.textNavFooter)
+                }
+              >
+                <HiShoppingCart size={24} />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
             </Link>
             {user ? (
-  <div className="flex items-center space-x-3">
-    <span className="text-sm">{user.email}</span>
-    <button
-      onClick={async () => await signOut(auth)}
-      className="text-sm px-2 py-1 bg-[#8B2C2C] text-[#F5EFE6] rounded hover:bg-[#641B1B] transition cursor-pointer"
-    >
-      Salir
-    </button>
-  </div>
-) : (
-  <Link href="/login">
-    <button
-      aria-label="Usuario"
-      style={{ color: colors.textNavFooter }}
-      className="cursor-pointer transition-colors duration-200"
-      onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-      onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
-    >
-      <HiUser size={24} />
-    </button>
-  </Link>
-)}
-
-
+              <div className="flex items-center space-x-3">
+                <span className="text-sm">{user.email}</span>
+                <button
+                  onClick={async () => await signOut(auth)}
+                  className="text-sm px-2 py-1 bg-[#8B2C2C] text-[#F5EFE6] rounded hover:bg-[#641B1B] transition cursor-pointer"
+                >
+                  Salir
+                </button>
+              </div>
+            ) : (
+              <Link href="/login">
+                <button
+                  aria-label="Usuario"
+                  style={{ color: colors.textNavFooter }}
+                  className="cursor-pointer transition-colors duration-200"
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = colors.btnPrimary)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = colors.textNavFooter)
+                  }
+                >
+                  <HiUser size={24} />
+                </button>
+              </Link>
+            )}
           </div>
 
           {/* Botón Hamburguesa */}
@@ -197,8 +220,12 @@ export default function Navbar() {
               aria-label="Toggle menu"
               style={{ color: colors.textNavFooter }}
               className="cursor-pointer transition-colors duration-200"
-              onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = colors.btnPrimary)
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = colors.textNavFooter)
+              }
             >
               {menuOpen ? <HiX size={28} /> : <HiOutlineMenu size={28} />}
             </button>
@@ -208,31 +235,31 @@ export default function Navbar() {
 
       {/* Fondo oscuro al abrir menú móvil */}
       {menuOpen && (
-  <div
-    className="fixed inset-0 bg-transparent backdrop-blur-md z-40"
-    onClick={closeMenu}
-    aria-hidden="true"
-  />
-)}
-
-
+        <div
+          className="fixed inset-0 bg-transparent backdrop-blur-md z-40"
+          onClick={closeMenu}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Menú lateral móvil */}
       <div
-        style={{ backgroundColor: colors.navbarFooter, color: colors.textNavFooter }}
+        style={{
+          backgroundColor: colors.navbarFooter,
+          color: colors.textNavFooter,
+        }}
         className={`fixed top-16 left-0 h-[calc(100%-4rem)] w-4/5 max-w-xs shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-
-{/* Línea divisoria debajo del título */}
-<div
-  style={{
-    borderTop: `1px solid ${colors.textNavFooter}`,
-    opacity: 0.3,
-  }}
-  className="w-full mb-2"
-></div>
+        {/* Línea divisoria debajo del título */}
+        <div
+          style={{
+            borderTop: `1px solid ${colors.textNavFooter}`,
+            opacity: 0.3,
+          }}
+          className="w-full mb-2"
+        ></div>
 
         <ul className="flex flex-col p-4 space-y-3 overflow-y-auto h-full">
           <li>
@@ -264,7 +291,11 @@ export default function Navbar() {
                   stroke="currentColor"
                   strokeWidth={2}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
 
@@ -275,19 +306,21 @@ export default function Navbar() {
                   role="menu"
                   aria-label={`${cat} submenu`}
                 >
-                {subcats.map((sub) => (
-                <li key={sub} role="none">
-                <Link
-                  href={`/${cat.toLowerCase()}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
-                  onClick={closeMenu}
-                  className="block px-3 py-1.5 text-sm font-medium text-[#EADAC8] hover:bg-[#70412C] hover:text-[#F5EFE6] rounded transition-all duration-200"
-                  role="menuitem"
-                >{sub}
-                </Link>
-              </li>
-              ))}
-              </ul>
-
+                  {subcats.map((sub) => (
+                    <li key={sub} role="none">
+                      <Link
+                        href={`/${cat.toLowerCase()}/${sub
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")}`}
+                        onClick={closeMenu}
+                        className="block px-3 py-1.5 text-sm font-medium text-[#EADAC8] hover:bg-[#70412C] hover:text-[#F5EFE6] rounded transition-all duration-200"
+                        role="menuitem"
+                      >
+                        {sub}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               )}
             </li>
           ))}
@@ -295,32 +328,39 @@ export default function Navbar() {
           {/* Íconos móviles */}
           <li className="flex space-x-6 mt-4 px-3">
             <Link href="/cart" className="relative">
-            <button
-              aria-label="Carrito"
-              style={{ color: colors.textNavFooter }}
-              className="cursor-pointer transition-colors duration-200"
-              onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
-            >
-              <HiShoppingCart size={24} />
-              {totalItems > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                {totalItems}
-                </span>
-  )}
-            </button>
+              <button
+                aria-label="Carrito"
+                style={{ color: colors.textNavFooter }}
+                className="cursor-pointer transition-colors duration-200"
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = colors.btnPrimary)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = colors.textNavFooter)
+                }
+              >
+                <HiShoppingCart size={24} />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
             </Link>
             <Link href="/login">
-            <button
-              aria-label="Usuario"
-              style={{ color: colors.textNavFooter }}
-              className="cursor-pointer transition-colors duration-200"
-              onMouseEnter={(e) => (e.currentTarget.style.color = colors.btnPrimary)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = colors.textNavFooter)}
-            >
-              <HiUser size={24} />
-            </button>
+              <button
+                aria-label="Usuario"
+                style={{ color: colors.textNavFooter }}
+                className="cursor-pointer transition-colors duration-200"
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = colors.btnPrimary)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = colors.textNavFooter)
+                }
+              >
+                <HiUser size={24} />
+              </button>
             </Link>
           </li>
         </ul>

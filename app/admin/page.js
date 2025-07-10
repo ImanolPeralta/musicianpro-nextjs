@@ -46,7 +46,7 @@ export default function AdminPage() {
 
   const mostrarNotificacion = (mensaje) => {
     setNotificacion(mensaje);
-    setTimeout(() => setNotificacion(""), 3000); // se oculta a los 3 segundos
+    setTimeout(() => setNotificacion(""), 3000);
   };
 
   const handleActualizarProducto = async () => {

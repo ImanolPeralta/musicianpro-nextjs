@@ -1,4 +1,3 @@
-// app/[categoria]/[subcategoria]/page.js
 import ProductCard from "../../components/products/ProductCard";
 
 const fetchProductos = async () => {
@@ -10,13 +9,11 @@ const fetchProductos = async () => {
 export async function generateStaticParams() {
   const productos = await fetchProductos();
 
-  // Extraemos todos los pares únicos de categoría/subcategoría
   const paths = productos.map((prod) => ({
     categoria: prod.categoria.toLowerCase(),
     subcategoria: prod.subcategoria.toLowerCase().replace(/ /g, "-"),
   }));
 
-  // Quitamos duplicados
   const uniquePaths = Array.from(
     new Map(paths.map((p) => [`${p.categoria}/${p.subcategoria}`, p])).values()
   );
@@ -27,7 +24,8 @@ export async function generateStaticParams() {
 export default async function CategoriaPage({ params }) {
   const { categoria, subcategoria } = params;
 
-  const catFormateada = categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
+  const catFormateada =
+    categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase();
   const subcatFormateada = subcategoria.replace(/-/g, " ");
 
   const productos = await fetchProductos();

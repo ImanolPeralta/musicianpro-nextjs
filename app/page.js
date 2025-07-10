@@ -7,7 +7,7 @@ export default function Inicio() {
     <>
       {/* Slider fuera del contenedor que limita el ancho */}
       <AutoSlider />
-      <CategoriaDestacada/>
+      <CategoriaDestacada />
 
       {/* Contenido con margen, si lo necesitás */}
       <div className="container mx-auto px-4">
