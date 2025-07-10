@@ -12,8 +12,8 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { Link } from "lucide-react";
-import { Link } from 'next/link';
+import { Link as LinkIcon } from "lucide-react";
+import Link from 'next/link';
 
 const colors = {
   fondoCard: "#E8DCCB",
