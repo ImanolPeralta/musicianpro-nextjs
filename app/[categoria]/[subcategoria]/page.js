@@ -1,9 +1,14 @@
 import ProductCard from "../../components/products/ProductCard";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const fetchProductos = async () => {
-  const res = await fetch("/api/productos");
-  if (!res.ok) throw new Error("Error al obtener productos");
-  return res.json();
+  const querySnapshot = await getDocs(collection(db, "productos"));
+  const productos = [];
+  querySnapshot.forEach((doc) => {
+    productos.push({ id: doc.id, ...doc.data() });
+  });
+  return productos;
 };
 
 export async function generateStaticParams() {
@@ -14,6 +19,7 @@ export async function generateStaticParams() {
     subcategoria: prod.subcategoria.toLowerCase().replace(/ /g, "-"),
   }));
 
+  // eliminar paths duplicados
   const uniquePaths = Array.from(
     new Map(paths.map((p) => [`${p.categoria}/${p.subcategoria}`, p])).values()
   );

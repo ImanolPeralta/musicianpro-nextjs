@@ -1,17 +1,22 @@
 import ProductDetail from "../../components/products/ProductDetail";
 import { notFound } from "next/navigation";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const fetchProductoPorId = async (id) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/productos/${id}`
-  );
-  if (!res.ok) return null;
-  return res.json();
+  const docRef = doc(db, "productos", id);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) return null;
+  return { id: docSnap.id, ...docSnap.data() };
 };
 
 export async function generateStaticParams() {
-  const res = await fetch("/api/productos");
-  const productos = await res.json();
+  const querySnapshot = await getDocs(collection(db, "productos"));
+  const productos = [];
+  querySnapshot.forEach((doc) => {
+    productos.push({ id: doc.id });
+  });
 
   return productos.map((producto) => ({
     id: producto.id.toString(),
