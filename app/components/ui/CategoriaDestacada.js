@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const categorias = [
   {
-    nombre: "Pianos Digitales",
+    nombre: "Pianos",
     imagen: "/img6.png",
     enlace: "/electrofonos/pianos-digitales",
   },
@@ -22,6 +22,26 @@ const categorias = [
     nombre: "Flautas",
     imagen: "/img4.png",
     enlace: "/aerofonos/flautas",
+  },
+  {
+    nombre: "Saxofones",
+    imagen: "/img16.png",
+    enlace: "/aerofonos/saxofones",
+  },
+  {
+    nombre: "Violines",
+    imagen: "/img17.png",
+    enlace: "/cordofonos/violines",
+  },
+  {
+    nombre: "Teclados",
+    imagen: "/img18.png",
+    enlace: "/electrofonos/teclados",
+  },
+  {
+    nombre: "Bajos",
+    imagen: "/img19.png",
+    enlace: "/electrofonos/bajos-electricos",
   },
 ];
 

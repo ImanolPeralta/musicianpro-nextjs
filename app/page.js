@@ -1,6 +1,11 @@
-import ProductList from "./components/products/ProductList";
 import AutoSlider from "./components/ui/AutoSlider";
+import BeneficiosSection from "./components/ui/BeneficiosSection";
 import CategoriaDestacada from "./components/ui/CategoriaDestacada";
+import OfertasSection from "./components/ui/OfertasSection";
+import PromoLinks from "./components/ui/PromoLinks";
+import ImagenesSlider from "./components/ui/ImagenesSlider";
+import Newsletter from "./components/ui/Newsletter";
+import ProductosDestacados from "./components/ui/ProductosDestacados";
 
 export default function Inicio() {
   return (
@@ -11,7 +16,12 @@ export default function Inicio() {
 
       {/* Contenido con margen, si lo necesitás */}
       <div className="container mx-auto px-4">
-        <ProductList category="todos" />
+        <OfertasSection />
+        <PromoLinks />
+        <ProductosDestacados />
+        <ImagenesSlider />
+        <BeneficiosSection />
+        <Newsletter/>
       </div>
     </>
   );

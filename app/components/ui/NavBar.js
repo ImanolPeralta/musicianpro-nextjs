@@ -33,7 +33,7 @@ const categories = {
   Electrofonos: [
     "Sintetizadores",
     "Teclados",
-    "Bajos eléctricos",
+    "Bajos electricos",
     "Pianos Digitales",
     "Theremines",
     "Controladores MIDI",
